@@ -1,72 +1,40 @@
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
+import Home from './pages/Home';
+import ProductDetails from './pages/ProductDetails';
+import Cart from './pages/Cart';
+import Login from './pages/Login';
+import Categories from './pages/Categories';
+import { AuthProvider } from './context/AuthContext';
+import { CartProvider } from './context/CartContext';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
-import { useState } from 'react';
-
-function Header() {
-    return (
-        <header className="header">
-            <h1>Creative Space</h1>
-            <nav>
-                <a href="#home">Home</a>
-                <a href="#about">About</a>
-                <a href="#contact">Contact</a>
-            </nav>
-        </header>
-    );
-}
-
-function Card({ title, content, color }) {
-    return (
-        <div className="card" style={{ backgroundColor: color }}>
-            <h3>{title}</h3>
-            <p>{content}</p>
-        </div>
-    );
-}
-
-function AnimatedButton({ text, onClick }) {
-    return (
-        <button className="animated-button" onClick={onClick}>
-            {text}
-        </button>
-    );
-}
 
 function App() {
-    const [count, setCount] = useState(0);
-
     return (
-        <div className="App">
-            <Header />
-
-            <main className="main-content">
-                <section className="hero-section">
-                    <h2>Welcome to Our Creative Space</h2>
-                    <p>Explore the possibilities of modern web design</p>
-                    <AnimatedButton
-                        text={`Clicked ${count} times!`}
-                        onClick={() => setCount(count + 1)}
-                    />
-                </section>
-
-                <section className="cards-container">
-                    <Card
-                        title="Design"
-                        content="Creative and responsive designs for modern web"
-                        color="#ff6b6b"
-                    />
-                    <Card
-                        title="Develop"
-                        content="Building robust and scalable applications"
-                        color="#4ecdc4"
-                    />
-                    <Card
-                        title="Deploy"
-                        content="Seamless deployment and maintenance"
-                        color="#45b7d1"
-                    />
-                </section>
-            </main>
-        </div>
+        <AuthProvider>
+            <CartProvider>
+                <Router>
+                    <div className="App d-flex flex-column min-vh-100">
+                        <Navbar />
+                        <main className="flex-grow-1">
+                            <div className="container py-4">
+                                <Routes>
+                                    <Route path="/" element={<Home />} />
+                                    <Route path="/product/:id" element={<ProductDetails />} />
+                                    <Route path="/cart" element={<Cart />} />
+                                    <Route path="/login" element={<Login />} />
+                                    <Route path="/categories" element={<Categories />} />
+                                </Routes>
+                            </div>
+                        </main>
+                        <Footer />
+                    </div>
+                </Router>
+            </CartProvider>
+        </AuthProvider>
     );
 }
 
